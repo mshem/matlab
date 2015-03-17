@@ -1,0 +1,11 @@
+ftemp=32
+ctemp=(ftemp-32)*5/9
+r1=100
+r2=1000
+r3=10000
+rtot=1/(1/r1+1/r2+1/r3)
+c=3e8
+v=c/2
+lorentz=1/sqrt(1-(v^2/c^2))
+radius=10
+cost=32430/radius+428*pi*radius

@@ -1,0 +1,57 @@
+hw1
+
+ftemp =
+
+    32
+
+
+ctemp =
+
+     0
+
+
+r1 =
+
+   100
+
+
+r2 =
+
+        1000
+
+
+r3 =
+
+       10000
+
+
+rtot =
+
+   90.0901
+
+
+c =
+
+   300000000
+
+
+v =
+
+   150000000
+
+
+lorentz =
+
+    1.1547
+
+
+radius =
+
+    10
+
+
+cost =
+
+   1.6689e+04
+
+diary michaelshemeshhw1.txt
