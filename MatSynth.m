@@ -1,5 +1,13 @@
 [road,fs] = audioread('road.wav');
 
+%
+% This is a framework for our project. 
+% We need to make a gui that runs commands.
+%
+
+
+
+
 len=size(road,1)/20;
 X=0:1:len;
 Y=X;
