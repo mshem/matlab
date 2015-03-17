@@ -1,3 +1,6 @@
+% Author: Michael Shemesh
+
 function s = taylorsin(x)
-s=taylorcos(x-90);
+% just do cos minus 90
+  s=taylorcos(x-90);
 end
