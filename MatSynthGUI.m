@@ -22,7 +22,7 @@ function varargout = MatSynthGUI(varargin)
 
 % Edit the above text to modify the response to help MatSynthGUI
 
-% Last Modified by GUIDE v2.5 17-Mar-2015 13:51:07
+% Last Modified by GUIDE v2.5 17-Mar-2015 23:44:19
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -51,10 +51,15 @@ function MatSynthGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to MatSynthGUI (see VARARGIN)
+handles.duration = 1.0;
+handles.volume = 1.0;
+handles.shape = 'sin';
+handles.frequency = 440;
 
 % Choose default command line output for MatSynthGUI
 handles.output = hObject;
-
+Y=waveform(handles.duration, handles.shape, handles.frequency, handles.volume);
+plot(Y(1:(44100/handles.frequency)));
 % Update handles structure
 guidata(hObject, handles);
 
@@ -161,33 +166,42 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 
-% --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton1 (see GCBO)
+% --- Executes on button press in play.
+function play_Callback(hObject, eventdata, handles)
+% hObject    handle to play (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+Y=waveform(handles.duration, handles.shape, handles.frequency, handles.volume);
+plot(Y(1:(44100/handles.frequency)));
+sound(Y,44100)
 
 
-% --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
+% --- Executes on button press in stop.
+function stop_Callback(hObject, eventdata, handles)
+% hObject    handle to stop (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+clear playsnd
 
-
-% --- Executes on selection change in popupmenu1.
-function popupmenu1_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
+% --- Executes on selection change in waveforms.
+function waveforms_Callback(hObject, eventdata, handles)
+% hObject    handle to waveforms (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+val = get(hObject, 'Value')
+str = get(hObject, 'String')
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu1
+if val > 0
+    handles.shape = strtrim(str(val,:))
+end
+guidata(hObject, handles);
+% Hints: contents = cellstr(get(hObject,'String')) returns waveforms contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from waveforms
 
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
+function waveforms_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to waveforms (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -232,3 +246,107 @@ function radiobutton4_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton4
+
+
+% --- Executes on slider movement.
+function duration_Callback(hObject, eventdata, handles)
+% hObject    handle to duration (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.duration=get(hObject, 'Value');
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function duration_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to duration (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function volume_Callback(hObject, eventdata, handles)
+% hObject    handle to volume (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.volume=get(hObject, 'Value')
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function volume_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to volume (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on selection change in presets.
+function presets_Callback(hObject, eventdata, handles)
+% hObject    handle to presets (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns presets contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from presets
+
+
+% --- Executes during object creation, after setting all properties.
+function presets_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to presets (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in addwave.
+function addwave_Callback(hObject, eventdata, handles)
+% hObject    handle to addwave (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in clearwave.
+function clearwave_Callback(hObject, eventdata, handles)
+% hObject    handle to clearwave (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on slider movement.
+function freq_Callback(hObject, eventdata, handles)
+% hObject    handle to freq (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+handles.frequency = get(hObject, 'Value');
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function freq_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to freq (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
