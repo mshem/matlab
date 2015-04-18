@@ -1,14 +1,15 @@
-function [ Y ] = waveform(duration,shape,frequency, volume)
+function [ Y ] = waveform(ADSR,shape,frequency, volume)
 % This function creates a set of data representing a sound wave
 % volume should be a % of the max volume. 1 is full volume.
 % duration in seconds is the length of the sound. we assume a sample rate
 % of 44100
 % shape is the type of wave
+duration=length(ADSR)/44100;
 X=0:1/44100:duration;
  
 switch shape
     case 'sin'
-        Y=sin(2*pi*frequency*X)*volume;
+        Y=sin(2*pi*frequency*X)*volume; % here is where well add ADSR envelope by multiplying volume by the envelope
     case 'square'
         period=(1/frequency);
         time=period*44100;
@@ -37,8 +38,7 @@ switch shape
     otherwise
         Y=zeroes(length(X));    
 end
-        Y=Y(1:length(X));
-
+        Y=Y(1:length(ADSR)).*ADSR;
     
  %   soundsc(Y,44100)
 
