@@ -36,7 +36,7 @@ switch shape
         s=[rise fall];
         Y=repmat(s,1,floor(frequency*duration))*volume*4-1;
     otherwise
-        Y=zeroes(length(X));    
+        Y=zeros(1,length(X));    
 end
         Y=Y(1:length(ADSR)).*ADSR;
     

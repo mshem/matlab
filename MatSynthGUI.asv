@@ -88,7 +88,7 @@ handles.ADSR=ADSR(0.5,0.5,0.5,0.5,handles.duration);
 handles.output = hObject;
 Y=waveform(handles.ADSR, handles.shape, handles.frequency, handles.volume);
 axes(handles.axes1);
-plot(1:floor((44100*4/handles.frequency)), (Y(1:(floor(44100*4/handles.frequency)))));
+plot(1:fl(44100*4/handles.frequency), (Y(1:(44100*4/handles.frequency))));
 axes(handles.axes2);
 plot(1:length(handles.ADSR), handles.ADSR);
 % Update handles structure
@@ -445,7 +445,7 @@ set(handles.durationslider, 'Value', handles.duration);
 handles.volume=handles.volumemin+(handles.volumemax-handles.volumemin)*rand(1,1);
 set(handles.volumeslider, 'Value', handles.volume);
 
-%handles.ADSR=ADSR(handles.attack,handles.decay,handles.sustain,handles.release,handles.duration);
+handles.ADSR=ADSR(handles.attack,handles.decay,handles.sustain,handles.release,handles.duration);
 set(handles.sustaindisplay,'String',handles.sustain)
 set(handles.releasedisplay,'String',handles.release)
 set(handles.decaydisplay,'String',handles.decay)

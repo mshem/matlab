@@ -17,7 +17,7 @@ end
 attackArray = (0:(attack*44100))/(attack*44100);
 decayArray = ((decay*44100):-1:0)/(decay*44100)*(1-sustain)+sustain;
 releaseArray = (((release*44100):-1:0)/(release*44100))*sustain;
-sustainArray = ones(1,(duration-totalmintime)*44100)*sustain;
+sustainArray = ones(1,floor((duration-totalmintime)*44100))*sustain;
 
 A= [attackArray decayArray sustainArray releaseArray];
 
