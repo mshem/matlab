@@ -22,7 +22,7 @@ function varargout = MatSynthGUI(varargin)
 
 % Edit the above text to modify the response to help MatSynthGUI
 
-% Last Modified by GUIDE v2.5 19-Apr-2015 00:27:34
+% Last Modified by GUIDE v2.5 20-Apr-2015 21:18:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -333,27 +333,7 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 
-% --- Executes on selection change in presets.
-function presets_Callback(hObject, eventdata, handles)
-% hObject    handle to presets (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns presets contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from presets
-
-
-% --- Executes during object creation, after setting all properties.
-function presets_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to presets (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: listbox controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 
@@ -424,8 +404,10 @@ function random_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.frequency=handles.frequencymin+(handles.frequencymax-handles.frequencymin)*rand(1,1);
 set(handles.freq, 'Value', handles.frequency);
+set(handles.frequencydisplay,'String',handles.frequency)
+
 r=randi(4);
-handles.shape=handles.shapes(r,:);
+handles.shape=strtrim(handles.shapes(r,:));
 set(handles.waveforms, 'Value', r+1);
 
 
@@ -441,9 +423,13 @@ set(handles.releaseslider, 'Value', handles.release);
 
 handles.duration=handles.durationmin+(handles.durationmax-handles.durationmin)*rand(1,1);
 set(handles.durationslider, 'Value', handles.duration);
+set(handles.durationdisplay,'String',handles.duration)
 
 handles.volume=handles.volumemin+(handles.volumemax-handles.volumemin)*rand(1,1);
 set(handles.volumeslider, 'Value', handles.volume);
+set(handles.volumedisplay,'String',handles.volume);
+
+
 
 %handles.ADSR=ADSR(handles.attack,handles.decay,handles.sustain,handles.release,handles.duration);
 set(handles.sustaindisplay,'String',handles.sustain)
@@ -453,8 +439,67 @@ set(handles.attackdisplay,'String',handles.attack)
 guidata(hObject, handles);
 
 
-% --- Executes on button press in addpreset.
-function addpreset_Callback(hObject, eventdata, handles)
-% hObject    handle to addpreset (see GCBO)
+
+% --- Executes on selection change in presets.
+function presets_Callback(hObject, eventdata, handles)
+% hObject    handle to presets (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns presets contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from presets
+val = get(hObject, 'Value')
+
+
+switch val
+    case 2
+        handles.shape ='sin';
+        handles.frequency=1000;
+        handles.volume=0.9;
+        handles.attack=0.001;
+        handles.decay=0.5;
+        handles.release=5;
+        handles.sustain=0.5;
+        handles.duration=0.15;
+        r=2;
+    case 3
+        handles.shape ='sin';
+        handles.frequency=160;
+        handles.volume=0.9;
+        handles.attack=1;
+        handles.decay=0.001;
+        handles.release=0.2;
+        handles.sustain=0.5;
+        handles.duration=0.15;
+        r=2;
+    otherwise
+end
+set(handles.durationslider, 'Value', handles.duration);
+set(handles.durationdisplay,'String',handles.duration);
+set(handles.volumedisplay,'String',handles.volume);
+set(handles.frequencydisplay,'String',handles.frequency)
+set(handles.waveforms, 'Value', r);
+
+set(handles.volumeslider, 'Value', handles.volume);
+set(handles.sustainslider, 'Value', handles.sustain);
+set(handles.releaseslider, 'Value', handles.release);
+set(handles.decayslider, 'Value', handles.decay);
+set(handles.attackslider, 'Value', handles.attack);
+set(handles.sustaindisplay,'String',handles.sustain)
+set(handles.releasedisplay,'String',handles.release)
+set(handles.decaydisplay,'String',handles.decay)
+set(handles.attackdisplay,'String',handles.attack)
+
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function presets_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to presets (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
